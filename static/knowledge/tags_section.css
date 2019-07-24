@@ -1,0 +1,104 @@
+.container{
+top:100px;
+position: relative;
+width: 1161px;
+height: 587px;
+left: 9px;
+top: 80px;
+
+}
+
+.label.inter_knowledge{
+
+left: 0.09%;
+right: 41.97%;
+
+
+}
+
+.label.inter_tags{
+left: 58.05%;
+right: 1.45%;
+
+}
+
+.label.priority{
+left: 59.6%;
+right: 32.04%;
+top: 22.49%;
+bottom: 70.7%;
+}
+
+.label{
+position: absolute;
+top: 0%;
+bottom: 94.12%;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+display: block;
+color: #000000;
+}
+
+div .textArea{
+overflow: auto;
+position: absolute;
+left: 0%;
+right: 43.15%;
+top: 5.79%;
+bottom: 37.65%;
+padding: 5px;
+background: #C4C4C4;
+border: 1px solid #4A7DC9;
+box-sizing: border-box;
+}
+
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+  color:white;
+}
+
+div .tagSection{
+overflow: auto;
+position: absolute;
+left: 59.6%;
+right: 0.86%;
+top: 5.79%;
+bottom: 81.43%;
+
+background: #C4C4C4;
+border: 1px solid #4A7DC9;
+box-sizing: border-box;
+}
+
+.tags_button{
+position:absolute;
+top: 66.1%;
+width:300px;
+}
+.tags_button:last-child{
+position:absolute;
+top: 66.1%;
+width:300px;
+left:30%;
+}
+
+input.priority_section{
+position:absolute;
+left: 67.96%;
+right: 23.08%;
+top: 22.49%;
+bottom: 70.7%;
+background: #C4C4C4;
+border: 1px solid #4A7DC9;
+box-sizing: border-box;
+font-size:16px;
+width:40px;
+text-align:-webkit-center
+}

@@ -1,0 +1,42 @@
+main{
+
+
+
+
+}
+
+.center-column{
+  width: 1000px;
+  margin: 0 auto;
+  border: 2px dashed #3498db;
+}
+
+.left-text{
+    border: 1px solid black;
+    margin: 10px 10px;
+    float:left;
+}
+
+
+.memory-column{
+    float:left;
+    border: 2px solid yellow;
+    width: 500px;
+
+}
+
+.tag-column{
+    float:left;
+}
+
+.line{
+
+
+}
+
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}

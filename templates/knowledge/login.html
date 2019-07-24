@@ -1,0 +1,53 @@
+{% extends 'knowledge/base.html' %}
+
+{% block content %}
+<div class="error-section">
+{% if error %}
+{{error}}
+    {%endif%}
+</div>
+<form name="login_form" action="{% url 'knowledge:login'  %}" method="post">
+    {% csrf_token %}
+    <div>
+        <label>
+            username
+            <input type="text" name="username">
+        </label>
+    </div>
+    <div>
+        <label>
+            password
+            <input type="password" name="password">
+        </label>
+    </div>
+
+    <input type="submit" value="submit" >
+</form>
+
+
+<script>
+var login_form
+login_form = document.getElementsByName('login_form')[0];
+console.log(login_form);
+login_form.onsubmit = function (evt)
+    {
+
+
+
+  var username = login_form.elements[1].value;
+  var password = login_form.elements[2].value;
+  if(username == "" || password == ""){
+    document.getElementsByClassName("error-section")[0].innerHTML ="заполните все поля";
+    }
+    else{
+    login_form.submit()
+    }
+  return false;
+
+};
+
+
+</script>
+
+
+{% endblock %}

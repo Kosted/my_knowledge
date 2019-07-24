@@ -1,0 +1,23 @@
+header {
+
+width:auto;
+height: 90px;
+display: flex;
+justify-content: center;
+background: #A5ABA4;
+align-items: center;
+}
+
+
+
+.button.on_header{
+margin-left:26px;
+}
+
+.button.on_header:last-child{
+margin-left:100px;
+}
+
+
+
+

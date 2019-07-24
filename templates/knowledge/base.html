@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'knowledge/base_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'knowledge/indexStyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'knowledge/tags_section.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'knowledge/header.css' %}">
+</head>
+
+<body>
+
+{% include 'knowledge/header.html' %}
+<main>
+{% block content %}
+
+{% endblock %}
+    </main>
+</body>
+
+</html>

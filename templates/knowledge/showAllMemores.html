@@ -1,0 +1,45 @@
+{% extends 'knowledge/base.html' %}
+
+{% block content %}
+
+    <div class="center-column ">
+
+
+        {% for info in memores_and_tags %}
+        <div class="line">
+            <div class="memory-column">
+                <div class="left-text">{{ info.0 }}</div>
+            </div>
+            {% for tag in info.1 %}
+
+            <div class="left-text">{{ tag }}</div>
+
+
+            {%endfor%}
+            {%endfor%}
+        </div>
+
+
+    </div> <div class="center-column ">
+
+
+        {% for info in memores_and_tags %}
+        <div class="line">
+            <div class="memory-column">
+                <div class="left-text">{{ info.0 }}</div>
+            </div>
+            {% for tag in info.1 %}
+
+            <div class="left-text">{{ tag }}</div>
+
+
+            {%endfor%}
+            {%endfor%}
+        </div>
+
+
+    </div>
+
+
+{% endblock %}
+
