@@ -104,15 +104,23 @@ text-align:-webkit-center
 }
 
 div.converted_tags{
-display:none;
+  display: block;
 position: absolute;
-left: 0%;
-right: 0%;
-top: 9.5%;
-bottom: 0%;
+width: 454px;
+height: 515px;
+left: 704px;
+top: 235px;
 
 background: #C4C4C4;
 border: 1px solid #4A7DC9;
 box-sizing: border-box;
+}
+
+.tag_button{
+margin-top: 6px;
+margin-left: 6px;
+padding: 3px 6px;
+display: inline;
 
 }
+

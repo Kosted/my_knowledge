@@ -98,7 +98,10 @@ def create_memory(request):
             memory.tags.add(tag)
             tag.inc_count()
             tag.save()
-        context = {"message": text[0:60]}
+        if len(text) < 60:
+            context = {"message": text}
+        else:
+            context = {"message": text[0:60]+"..."}
         return render(request, 'knowledge/create_memory.html', context)
 
     elif request.method == "GET":

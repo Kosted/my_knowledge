@@ -12,7 +12,7 @@ document.getElementsByClassName("container")[0].style.top = "100px";
 
     <div class="textArea" contenteditable="true" placeholder="Поместите текст сюда..."></div>
     <div class="label inter_tags">Введите теги</div>
-    <div class="tagSection" contenteditable="true" placefilesEnable live reloadpreviewholder="Введите теги сюда..."></div>
+    <div class="tagSection" contenteditable="true" placeholder='Без тега знанию будет присвоен тег: "no tags"'></div>
 
     <div class="tags_button button">
 
@@ -36,57 +36,7 @@ document.getElementsByClassName("container")[0].style.top = "100px";
     <div class="label priority"> Приоритет</div>
     <input type="text" class="priority_section" placeholder="8" value="">
 <div class="converted_tags"></div>
-    <script>
-var create_memory_button = document.getElementsByName("create_memory_button")[0];
-
-create_memory_button.addEventListener("click", function()
-{
-text = document.getElementsByClassName("textArea")[0].textContent;
-tags = document.getElementsByClassName("tagSection")[0].textContent;
-priority = document.getElementsByClassName("priority_section")[0].textContent;
-if(priority=="")
-    priority=8;
-
-
-var form = document.createElement("form");
-form.method = "POST";
-form.action = "{% url 'knowledge:create_memory'  %}";
-var input = document.createElement("input");
-input.value= tags;
-input.name="tags"
-
-
-console.log(tags)
-console.log(text)
-
-form.appendChild(input)
-
- input = document.createElement("input");
-input.value= text;
-input.name="text"
-
-form.appendChild(input)
-
- input = document.createElement("input");
-input.value= priority;
-input.name="priority"
-
-form.appendChild(input)
-
- input = document.createElement("input");
- input.name="csrfmiddlewaretoken"
-input.value= document.getElementsByName("csrfmiddlewaretoken")[0].value;
-form.appendChild(input)
-form.hidden = true;
-document.body.appendChild(form);
-form.submit()
-
-});
-
-
-
-
-
-    </script>
+    {% load static %}
+    <script type="text/javascript" src="{% static '/knowledge/js/create_memory.js' %}"></script>
 
 </div>

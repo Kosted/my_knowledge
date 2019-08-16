@@ -69,3 +69,23 @@ text-align: center;
 
 color: #000000;
 }
+
+/*temp*/
+
+img.temp{
+display:inline;
+background: #C4C4C4;
+box-sizing: border-box;
+}
+
+.tag_{
+display: inline;
+margin:0;
+padding: 3px 6px;
+
+}
+div.block{
+display:inline;
+border:solid black 1px;
+}
+/*end temp*/
