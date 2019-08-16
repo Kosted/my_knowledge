@@ -1,10 +1,9 @@
 .container{
-top:100px;
 position: relative;
 width: 1161px;
 height: 587px;
 left: 9px;
-top: 80px;
+top: 40px;
 
 }
 
@@ -82,6 +81,7 @@ position:absolute;
 top: 66.1%;
 width:300px;
 }
+
 .tags_button:last-child{
 position:absolute;
 top: 66.1%;
@@ -101,4 +101,18 @@ box-sizing: border-box;
 font-size:16px;
 width:40px;
 text-align:-webkit-center
+}
+
+div.converted_tags{
+display:none;
+position: absolute;
+left: 0%;
+right: 0%;
+top: 9.5%;
+bottom: 0%;
+
+background: #C4C4C4;
+border: 1px solid #4A7DC9;
+box-sizing: border-box;
+
 }

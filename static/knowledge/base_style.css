@@ -1,6 +1,7 @@
 body{
 margin:0;
 }
+
 main{
 margin:0;
 
@@ -36,4 +37,35 @@ align-items: center;
 display: flex;
 justify-content: center;
 text-decoration: none;
+}
+
+div.message{
+position: absolute;
+width: 771px;
+height: 48px;
+left: 20%;
+top: 120px;
+
+background: #C4C4C4;
+border: 2px solid #43CC7A;
+box-sizing: border-box;
+border-radius: 20px;
+}
+
+div.message_text{
+position: absolute;
+top: 30%;
+left: 20px;
+
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
 }

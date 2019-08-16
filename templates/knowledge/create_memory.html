@@ -4,8 +4,16 @@
 {% extends 'knowledge/base.html' %}
 
 {% block content %}
+{% if message != "" %}
+<div class="message" >
+    <div class="message_text">
+        Создано знание: "{{ message }}..."
 
+    </div>
+</div>
+{% endif %}
 {% include 'knowledge/tags_section.html' %}
-
+<!--<script src="convert_to_tags.js"></script>-->
+<script src="knowledge/js_script.js"></script>
 
 {% endblock %}

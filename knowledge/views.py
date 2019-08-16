@@ -17,6 +17,9 @@ def index(request):
 
 
 def show_memory(request):
+    user = request.user
+    if not user.is_authenticated:
+        return redirect("knowledge:login")
     context = {}
     all_memores = Memory.objects.filter(author=request.user).order_by('pub_date')
     memores_and_tags = list()
@@ -53,28 +56,27 @@ def show_memory(request):
 
 
 
-
-
-
-
-
-
-
-
 def create_memory(request):
     user = request.user
     if not user.is_authenticated:
         return redirect("knowledge:login")
     if request.method == "POST":
-        text = request.POST["text"]
+        text = str.strip(request.POST["text"])
+
+        if Memory.objects.filter(author=user, memory_text=text):
+            context = {"message": text[0:60]}
+            return render(request, 'knowledge/create_memory.html', context)
+
         raw_tags = request.POST["tags"]
         priority = request.POST["priority"]
+
         tags_string_list = raw_tags.split(",")
         tags_string_list = list(map(str.strip, tags_string_list))
 
         while "" in tags_string_list:
             tags_string_list.remove("")
-
+        if len(tags_string_list) == 0:
+            tags_string_list.append("no tags")
         all_current_user_tags = Tag.objects.filter(author=user)
 
         memory = Memory.objects.create(author=user, priority=priority, memory_text=text)
@@ -96,11 +98,11 @@ def create_memory(request):
             memory.tags.add(tag)
             tag.inc_count()
             tag.save()
-
-        return redirect("knowledge:index")
+        context = {"message": text[0:60]}
+        return render(request, 'knowledge/create_memory.html', context)
 
     elif request.method == "GET":
-        context = {}
+        context = {"message": ''}
         return render(request, 'knowledge/create_memory.html', context)
 
 
@@ -166,4 +168,5 @@ def createUser(request):
         return redirect('knowledge:index')
 
 
-
+def search(request):
+    pass
