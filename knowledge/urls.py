@@ -13,5 +13,9 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("createUser/", views.createUser, name="createUser"),
     path("logger/", views.logger, name="logger"),
-    path("search/", views.search, name="search")
+    path("search/", views.search, name="search"),
+    path("convert_text_to_tags/", views.convert_text_to_tags, name="convert_text_to_tags"),
+
+
+    path("temp/", views.temp, name="temp")
 ]

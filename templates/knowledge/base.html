@@ -13,6 +13,17 @@
 
 
     var url_create_memory= "{% url 'knowledge:create_memory'  %}"
+    var url_convert_text_to_tags= "{% url 'knowledge:convert_text_to_tags' %}"
+    var url_temp= "{% url 'knowledge:temp' %}"
+    var delete_icon= "{% static '/knowledge/img/delete_icon.png' %}"
+
+    function getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 </script>
 {% include 'knowledge/header.html' %}
 <main>

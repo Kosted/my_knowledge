@@ -1,9 +1,15 @@
 # Create your views here.
+import re
+
+import simplejson as simplejson
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.core.serializers import json
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from knowledge.models import Memory, Tag
+
+import pdb;
 #from knowledge.models import Memory, Tag
 
 
@@ -55,8 +61,9 @@ def show_memory(request):
         return HttpResponse(context)
 
 
-
 def create_memory(request):
+
+    # pdb.set_trace()
     user = request.user
     if not user.is_authenticated:
         return redirect("knowledge:login")
@@ -102,6 +109,7 @@ def create_memory(request):
             context = {"message": text}
         else:
             context = {"message": text[0:60]+"..."}
+        # return  HttpResponse(context, status=200)
         return render(request, 'knowledge/create_memory.html', context)
 
     elif request.method == "GET":
@@ -173,3 +181,44 @@ def createUser(request):
 
 def search(request):
     pass
+
+
+def convert_text_to_tags(request):
+    if request.method == "POST":
+        user = request.user
+        request_json_data = simplejson.loads(request.body)
+        # pdb.set_trace()
+        all_words = re.findall('\w+\S*\w+', request_json_data['text'])
+        existing_words = request_json_data['existing_tags']#.split(" ")
+
+        for word in existing_words:
+            if word in all_words:
+                all_words.remove(word)
+        res = []
+        # pdb.set_trace()
+        all_tags = Tag.objects.filter(author=user)
+        all_tags_string = []
+        for tag in all_tags:
+            all_tags_string.append(tag.tag_text)
+
+        for word in all_words:
+            if word in all_tags_string:
+                res.append((word, all_tags.filter(tag_text=word)[0].get_count()))
+            else:
+                res.append((word, 0))
+    context = {"tags": res}
+    return JsonResponse(context, status=200)
+
+
+def temp(request):
+    pass
+    # print(request.POST)
+    # # import ipdb; ipdb.set_trace()
+    # num = simplejson.loads(request.body)
+    # # pdb.set_trace()
+    # # tempword = request.POST['num']
+    # context = {"word": num["word"]}
+    # # context = "asdf :" + num["num"]
+    # # context["word"] = request.POST["word"]
+    #
+    # return JsonResponse(context, status=200)

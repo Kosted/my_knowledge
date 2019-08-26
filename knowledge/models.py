@@ -20,6 +20,9 @@ class Tag(models.Model):
     def inc_count(self):
         self.count += 1
 
+    def get_count(self):
+        return self.count
+
 
 class Memory(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=None)

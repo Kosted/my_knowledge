@@ -10,11 +10,13 @@ document.getElementsByClassName("container")[0].style.top = "100px";
 {% endif %}
     <div class="label inter_knowledge">Введите знание</div>
 
-    <div class="textArea" contenteditable="true" placeholder="Поместите текст сюда..."></div>
+    <div class="textArea" contenteditable="true" placeholder="Поместите текст сюда...">hh aksld;fj hfahsjfhalksdf jkjf3 8 8erut8</div>
     <div class="label inter_tags">Введите теги</div>
-    <div class="tagSection" contenteditable="true" placeholder='Без тега знанию будет присвоен тег: "no tags"'></div>
+    <div class="tagSection" placeholder='Без тега знанию будет присвоен тег: "no tags"' >
+        <div class="tag_input" contenteditable="true" name="input_for_new_tag" placeholder='Без тега знанию будет присвоен тег: "no tags"'></div>
+    </div>
 
-    <div class="tags_button button">
+    <div class="tags_button button" name="convert_text_to_tags">
 
         <div class="text_on_button">
             Преобразовать в теги
@@ -38,5 +40,7 @@ document.getElementsByClassName("container")[0].style.top = "100px";
 <div class="converted_tags"></div>
     {% load static %}
     <script type="text/javascript" src="{% static '/knowledge/js/create_memory.js' %}"></script>
+    <script type="text/javascript" src="{% static '/knowledge/js/YT_tag.js' %}"></script>
+    <script type="text/javascript" src="{% static '/knowledge/js/temp.js' %}"></script>
 
 </div>

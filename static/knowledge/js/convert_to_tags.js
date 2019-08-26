@@ -4,11 +4,17 @@ let convertTagsField = document.getElementsByClassName("converted_tags")[0];
 
 function updateTagList(){
   console.log("update tag list")
-  return ["tag1", "tag2"]
+  childNodes = tagsField.getElementsByClassName("tag_text")
+  res = []
+  for(let i = 0; i<childNodes; i++){
+  res.push(childNodes[i].value)
+  }
+  return res
 }
 
 function add_tag_in_tags_field(){
   console.log("add tag")
+//  input_for_new_tag.before(target_button)
   return 
 }
 

@@ -1,10 +1,13 @@
-import random
-n = 10
-result = []
-min_result_num = 101
-min_result_pos = -1
+import re
+s = "a№sdf , adf6:-sadf, s45  fjklfj:-dsflk511 fakldfэkf ff   jj  j   ;ljkjj%!!("
 
-for i in range(n):
-    num = random.randint(100)
+words = s.split(" ")
+# for word in words:
 
+pattern ="\w+\S*\w+"
 
+res = re.findall("\w+\S*\w+", s)
+
+print(s)
+print(words)
+print(res)

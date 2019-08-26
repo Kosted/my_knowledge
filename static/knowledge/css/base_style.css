@@ -72,20 +72,38 @@ color: #000000;
 
 /*temp*/
 
-img.temp{
+img.close_button{
 display:inline;
 background: #C4C4C4;
 box-sizing: border-box;
 }
 
-.tag_{
+.tag_text{
 display: inline;
 margin:0;
 padding: 3px 6px;
 
 }
-div.block{
-display:inline;
+div.tag_block{
+margin-top: 5px;
+margin-right:10px;
+padding: 2px;
+display:inline-block;
 border:solid black 1px;
+
+}
+
+div.tag_counter{
+display:inline;
+    padding:3px;
+    margin-top: 10px;
+    background: #C4C4C4;
+    border: 1px solid #4A7DC9;
+    text-align: center;
+    font-size: 18px;
+}
+
+div.tag_input{
+display:inline;
 }
 /*end temp*/

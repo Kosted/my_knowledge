@@ -82,13 +82,6 @@ top: 66.1%;
 width:300px;
 }
 
-.tags_button:last-child{
-position:absolute;
-top: 66.1%;
-width:300px;
-left:30%;
-}
-
 input.priority_section{
 position:absolute;
 left: 67.96%;
@@ -104,12 +97,13 @@ text-align:-webkit-center
 }
 
 div.converted_tags{
-  display: block;
+  display: none;
 position: absolute;
 width: 454px;
 height: 515px;
 left: 704px;
 top: 235px;
+padding:0px 5px;
 
 background: #C4C4C4;
 border: 1px solid #4A7DC9;
