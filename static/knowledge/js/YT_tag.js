@@ -9,15 +9,20 @@
 
 
 var convert_button = document.getElementsByName("convert_text_to_tags")[0]
+var converted_tags_field = document.getElementsByClassName("converted_tags")[0]
 
 function get_all_existing_tags(){
 
- let tag_elements = document.getElementsByClassName("converted_tags")[0].getElementsByClassName("tag_text");
+ let tag_elements = converted_tags_field.getElementsByClassName("tag_text");
+ let existing_tags = document.getElementsByClassName("tagSection")[0].getElementsByClassName("tag_text");
+
 // let tag_elements = document.getElementsByClassName("tagSection").getElementsByClassName("tag_text");
 
  let res = []
  for(let i = 0; i< tag_elements.length; i++)
     res.push(tag_elements[i].value)
+ for(let i = 0; i< existing_tags.length; i++)
+    res.push(existing_tags[i].value)
  return res;
 }
 
@@ -130,6 +135,19 @@ await fetch(url_convert_text_to_tags, {
 
 
 convert_button.addEventListener("click" , convert_text_to_tags)
+
+converted_tags_field.addEventListener("click", function(event){
+let target_button = event.target;
+if(target_button.className == "close_button"){
+        while(target_button.className!="tag_block")
+
+               target_button= target_button.parentNode
+
+    target_button.remove()
+    if(converted_tags_field.getElementsByClassName("tag_text").length==0)
+    converted_tags_field.style.display="none"
+    }
+})
 
 
 

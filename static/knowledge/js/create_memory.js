@@ -5,7 +5,13 @@ create_memory_button.addEventListener("click", function()
 text = document.getElementsByClassName("textArea")[0].textContent;
 if(text =="")
 return
-tags = document.getElementsByClassName("tagSection")[0].textContent;
+
+tagElements = document.getElementsByClassName("tagSection")[0].getElementsByClassName("tag_text")
+tags = []
+  for(let i = 0; i<tagElements.length; i++){
+  tags.push(tagElements[i].value)
+  }
+
 priority = document.getElementsByClassName("priority_section")[0].textContent;
 if(priority=="")
     priority=8;
