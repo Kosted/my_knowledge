@@ -2,16 +2,7 @@
 {% load static %}
 {% block content %}
 
-<div class="block">
-<input type="button" class="tag_" value="Example TAG">
-    <div class="tag_counter">156</div>
-<img class="temp" src="{% static '/knowledge/img/delete_icon.png' %}" height = "24 px" align="center">
 
-</div>
-
-<script>
-    var url_temp= "{% url 'knowledge:temp'  %}"
-</script>
 <!--{% csrf_token %}-->
 <!--<script src="{% static '/knowledge/js/temp.js' %}"></script>-->
 {% endblock %}

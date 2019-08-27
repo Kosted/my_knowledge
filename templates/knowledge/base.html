@@ -15,7 +15,10 @@
     var url_create_memory= "{% url 'knowledge:create_memory'  %}"
     var url_convert_text_to_tags= "{% url 'knowledge:convert_text_to_tags' %}"
     var url_temp= "{% url 'knowledge:temp' %}"
+    var url_get_single_tag_counter= "{% url 'knowledge:get_single_tag_counter' tag_text='null' %}"
     var delete_icon= "{% static '/knowledge/img/delete_icon.png' %}"
+
+console.log(url_get_single_tag_counter)
 
     function getCookie(name) {
   let matches = document.cookie.match(new RegExp(

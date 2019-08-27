@@ -210,6 +210,16 @@ def convert_text_to_tags(request):
     return JsonResponse(context, status=200)
 
 
+def get_single_tag_counter(request, tag_text):
+    if request.method == "GET":
+        user = request.user
+        single_tag = Tag.objects.filter(author=user).filter(tag_text=tag_text)
+        # pdb.set_trace()
+        if len(single_tag) == 0:
+            return HttpResponse("0", status=200)
+        return HttpResponse(single_tag[0].get_count(), status=200)
+
+
 def temp(request):
     pass
     # print(request.POST)
