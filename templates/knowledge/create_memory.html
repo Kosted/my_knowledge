@@ -1,7 +1,9 @@
-
-
-
 {% extends 'knowledge/base.html' %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/tags_section.css' %}">
+{% endblock %}
+
+
 
 {% block content %}
 {% if message != "" %}

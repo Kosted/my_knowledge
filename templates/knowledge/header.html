@@ -1,13 +1,14 @@
+
 <header>
 
     {% if request.path != "/login/" and request.path != "/signup/" %}
     <a  class="button on_header">
         <div class="text_on_button">поиск</div>
     </a>
-    <a href="/show_memory" class="button on_header">
+    <a href="{% url 'knowledge:show_memory' order_by='date' %}" class="button on_header">
         <div class="text_on_button">Посмотреть все здания</div>
     </a>
-    <a href="/create_memory" class="button on_header">
+    <a href="{% url 'knowledge:create_memory' %}" class="button on_header">
         <div class="text_on_button">Создать знание</div>
     </a>
     <a class="button on_header">

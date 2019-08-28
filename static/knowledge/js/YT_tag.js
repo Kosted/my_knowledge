@@ -261,9 +261,6 @@ editable_div_for_update_tags.addEventListener("keyup", function(event){
 })
 
 
-
-
-
 //делегирование события клика на область с текущими тегами
 tagSection.addEventListener("click", function(event){
 

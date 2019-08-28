@@ -22,7 +22,7 @@ def index(request):
         return render(request, "knowledge/login.html")
 
 
-def show_memory(request):
+def show_memory(request, order_by):
     user = request.user
     if not user.is_authenticated:
         return redirect("knowledge:login")
@@ -32,9 +32,10 @@ def show_memory(request):
 
     if request.method == "GET":
 
-        if len(all_memores) > 10:
-            all_memores = all_memores[:10]
-            context['offset'] = 10
+        if len(all_memores) > 20:
+            all_memores = all_memores[:20]
+            context['offset'] = len(all_memores)
+            # context['offset'] = 20
         else:
             context['offset'] = len(all_memores) #отсутствуют дополнительные элементы
 

@@ -3,8 +3,13 @@
 <head>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/base_style.css' %}">
+
+    {% block head %}
+
+    {% endblock %}
+
+
     <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/indexStyle.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/tags_section.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/header.css' %}">
 </head>
 
