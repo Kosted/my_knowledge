@@ -185,6 +185,7 @@ if(global_input_value != ""){
     input_for_new_tag.innerText = ""
     input_for_new_tag.before(new_tag_for_input)
     global_input_value = ""
+    check_placeholder()
 //    }
 //    else{
 //
@@ -210,10 +211,22 @@ if(global_input_value != ""){
 
     global_input_value=""
 
+}else{
+editable_div_for_update_tags.parentNode.remove()
+check_placeholder()
 }
 }
 
-
+function check_placeholder(){
+if(tagSection.childNodes.length>1){
+console.log("placeholder = ''")
+    input_for_new_tag.placeholder = ""
+    }
+    else{
+    console.log("placeholder = 'sgsdfgsdfgsdfg'")
+    input_for_new_tag.placeholder = 'Без тега знанию будет присвоен тег: "no tags"'
+    }
+}
 
 // отлавливание события нажатия клавишь в передовом инпуте
 input_for_new_tag.addEventListener("keyup", function(event){
@@ -230,10 +243,19 @@ editable_div_for_update_tags.contentEditable=true
 
 
 //
-editable_div_for_update_tags.addEventListener("blur",update_input_for_new_tag)
+let blur_flag = true
+editable_div_for_update_tags.addEventListener("blur",function(event){
+if(blur_flag)
+    update_input_for_new_tag()
+})
+
 editable_div_for_update_tags.addEventListener("keyup", function(event){
-    if(event.key=="," || event.code=="Enter")
+    if(event.key=="," || event.code=="Enter"){
+
+      blur_flag = false
       update_input_for_new_tag()
+      blur_flag=true
+    }
     else
         global_input_value = editable_div_for_update_tags.innerText
 })
@@ -246,9 +268,10 @@ editable_div_for_update_tags.addEventListener("keyup", function(event){
 tagSection.addEventListener("click", function(event){
 
     let target_button = event.target;
-    console.log(target_button)
-    if (target_button.className == "tagSection")
+    console.log(target_button.className)
+    if (target_button.classList.contains("tagSection"))
         input_for_new_tag.focus()
+//console.log("focus")
     else
     if(target_button.className == "close_button"){
         while(target_button.className!="tag_block")

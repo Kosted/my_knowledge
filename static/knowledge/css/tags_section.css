@@ -58,10 +58,10 @@ border: 1px solid #4A7DC9;
 box-sizing: border-box;
 }
 
-[contenteditable=true]:empty:before{
+/*[contenteditable=true]:empty:before{
   content: attr(placeholder);
   color:white;
-}
+}*/
 
 div .tagSection{
 overflow: auto;

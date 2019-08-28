@@ -33,7 +33,7 @@ def show_memory(request):
     if request.method == "GET":
 
         if len(all_memores) > 10:
-            all_memores = all_memores[:9]
+            all_memores = all_memores[:10]
             context['offset'] = 10
         else:
             context['offset'] = len(all_memores) #отсутствуют дополнительные элементы

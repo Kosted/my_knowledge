@@ -26,6 +26,7 @@ if (target.tagName == 'INPUT'){
     while(target.className!="tag_block")
           target= target.parentNode
     add_tag_in_tags_field(target)
+    check_placeholder()
     if(converted_tags_field.getElementsByClassName("tag_text").length==0)
         converted_tags_field.style.display="none"
   }
