@@ -7,7 +7,7 @@ main{
 
 .center-column{
   width: 1000px;
-  margin: 0 auto;
+  margin: 60px 0 auto auto;
   border: 2px dashed #3498db;
 }
 

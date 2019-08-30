@@ -1,16 +1,16 @@
 {% extends 'knowledge/base.html' %}
     {% block head %}
-            <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/tags_section.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/show_all_memory.css' %}">
     {% endblock %}
 
 {% block content %}
-<!--<div class="button under_header">-->
-    <!--<div class="text_on_button">По времени создания</div>-->
-<!--</div>-->
-<!--<div class="button under_header">-->
+<div class="button under_header sort_by_date" >
+    <div class="text_on_button">По времени создания</div>
+</div>
+<div class="button under_header sort_by_priority" >
 
-    <!--<div class="text_on_button">По приоритету</div>-->
-<!--</div>-->
+    <div class="text_on_button">По приоритету</div>
+</div>
     <div class="center-column ">
 
 
@@ -24,14 +24,16 @@
             <div class="left-text">{{ tag }}</div>
 
 
-        </div>
         {%endfor%}
+                    </div>
+
         {%endfor%}
 
 
     </div>
 
 
+    <script type="text/javascript" src="{% static '/knowledge/js/show_all_memory.js' %}"></script>
 
 {% endblock %}
 

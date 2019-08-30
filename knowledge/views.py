@@ -27,7 +27,10 @@ def show_memory(request, order_by):
     if not user.is_authenticated:
         return redirect("knowledge:login")
     context = {}
-    all_memores = Memory.objects.filter(author=request.user).order_by('pub_date')
+
+    order_by = "pub_date" if order_by == "date" else "priority"
+
+    all_memores = Memory.objects.filter(author=request.user).order_by(order_by)
     memores_and_tags = list()
 
     if request.method == "GET":

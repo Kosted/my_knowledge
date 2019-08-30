@@ -1,3 +1,12 @@
 .under_header{
 position: absolute;
+top: 23%;
+}
+
+.sort_by_priority{
+left:30%;
+}
+
+.sort_by_date{
+left:50%;
 }
