@@ -49,20 +49,26 @@ def show_memory(request, order_by):
         return render(request, 'knowledge/showAllMemores.html', context)
 
     elif request.method == "POST":
-        offset = int(request.POST['offset'])
+        # offset = int(request.POST['offset'])
+        body = simplejson.loads(request.body)
+        offset = body['offset']
         if len(all_memores) > offset:
-            all_memores = all_memores[offset:offset+10]
             if len(all_memores) - offset > 10:
                 offset += 10
             else:
                 offset = 0 #len(all_memores) - offset
+        all_memores = all_memores[offset:offset + 10]
 
         for memory in all_memores:
             memores_and_tags.append(memory.field_to_list())
+        # context ={"memores_and_tags": memores_and_tags}
+
         context["memores_and_tags"] = memores_and_tags
         context["offset"] = offset
+        pdb.set_trace()
 
-        return HttpResponse(context)
+        # return HttpResponse(json.dumps(context),
+        return JsonResponse({"memores_and_tags": memores_and_tags, "offset": offset}, status=200)
 
 
 def create_memory(request):

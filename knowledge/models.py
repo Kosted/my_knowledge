@@ -1,3 +1,5 @@
+import pdb
+
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -40,4 +42,8 @@ class Memory(models.Model):
         return self.memory_text
 
     def field_to_list(self):
-        return [self.memory_text,self.tags.all(),self.pub_date,self.priority]
+        # pdb.set_trace()
+        tags_text = []
+        for tag in self.tags.all():
+            tags_text.append(tag.tag_text)
+        return {"memory_text" :self.memory_text, "tags_text":tags_text, "pub_date":self.pub_date, "priority":self.priority}
