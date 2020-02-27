@@ -72,9 +72,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+            ]
+            ,
             'builtins': [
-                'django.contrib.staticfiles.templatetags.staticfiles',
+                'django.templatetags.static',
             ],
         },
     },
@@ -90,9 +91,10 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
+        # 'ENGINE': ' django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'memorydb',
-        'USER': 'test1',
+        'NAME': 'myknowdb',
+        'USER': 'myknow',
         'PASSWORD': '112358',
         'HOST': 'localhost',
         'PORT': '',
@@ -143,7 +145,7 @@ USE_TZ = True
 #
 # ]
 
-STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static')
+STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media')

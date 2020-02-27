@@ -1,7 +1,8 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
+
     <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/base_style.css' %}">
 
     {% block head %}
@@ -33,6 +34,7 @@ console.log(url_get_single_tag_counter)
 }
 
 </script>
+
 {% include 'knowledge/header.html' %}
 <main>
 {% block content %}
