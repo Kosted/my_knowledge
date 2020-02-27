@@ -1,33 +1,33 @@
 {% extends 'knowledge/base.html' %}
-    {% block head %}
-            <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/show_all_memory.css' %}">
-    {% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'knowledge/css/show_all_memory.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="button under_header sort_by_date" >
-    <div class="text_on_button">По времени создания</div>
-</div>
-<div class="button under_header sort_by_priority" >
-
-    <div class="text_on_button">По приоритету</div>
-</div>
+{#    <div class="button under_header sort_by_date">#}
+{#        <div class="text_on_button">По времени создания</div>#}
+{#    </div>#}
+{#    <div class="button under_header sort_by_priority">#}
+{##}
+{#        <div class="text_on_button">По приоритету</div>#}
+{#    </div>#}
     <div class="center-column ">
 
 
         {% for info in memores_and_tags %}
-        <div class="line">
-            <div class="memory-column">
-                <div class="left-text">{{ info.0 }}</div>
+            <div class="line">
+                <div class="memory-column">
+                    <div class="left-text">{{ info.memory_text }}</div>
+                </div>
+                {% for tag in info.tags_text %}
+
+                    <div class="left-text">{{ tag }}</div>
+
+
+                {% endfor %}
             </div>
-            {% for tag in info.1 %}
 
-            <div class="left-text">{{ tag }}</div>
-
-
-        {%endfor%}
-                    </div>
-
-        {%endfor%}
+        {% endfor %}
 
 
     </div>

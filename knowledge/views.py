@@ -5,6 +5,7 @@ import simplejson as simplejson
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.core.serializers import json
+from django.db.models.functions import Lower
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from knowledge.models import Memory, Tag
@@ -39,8 +40,8 @@ def show_memory(request, order_by):
             all_memores = all_memores[:20]
             context['offset'] = len(all_memores)
             # context['offset'] = 20
-        else:
-            context['offset'] = len(all_memores) #отсутствуют дополнительные элементы
+        # else:
+        #     context['offset'] = len(all_memores) #отсутствуют дополнительные элементы
 
         for memory in all_memores:
             memores_and_tags.append(memory.field_to_list())
@@ -223,7 +224,7 @@ def convert_text_to_tags(request):
 def get_single_tag_counter(request, tag_text):
     if request.method == "GET":
         user = request.user
-        single_tag = Tag.objects.filter(author=user).filter(tag_text=tag_text)
+        single_tag = Tag.objects.filter(author=user).annotate(tag_lower=Lower('tag_text')).filter(tag_lower=tag_text)
         # pdb.set_trace()
         if len(single_tag) == 0:
             return HttpResponse("0", status=200)
