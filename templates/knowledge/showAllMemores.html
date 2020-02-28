@@ -5,40 +5,41 @@
 
 {% block content %}
     <main>
-    {#    <div class="button under_header sort_by_date">#}
-    {#        <div class="text_on_button">По времени создания</div>#}
-    {#    </div>#}
-    {#    <div class="button under_header sort_by_priority">#}
-    {##}
-    {#        <div class="text_on_button">По приоритету</div>#}
-    {#    </div>#}
-    <div class="sidebar">
+        {#    <div class="button under_header sort_by_date">#}
+        {#        <div class="text_on_button">По времени создания</div>#}
+        {#    </div>#}
+        {#    <div class="button under_header sort_by_priority">#}
+        {##}
+        {#        <div class="text_on_button">По приоритету</div>#}
+        {#    </div>#}
+        <div class="sidebar">
 
-    </div>
-    <div class="center-column ">
+        </div>
+        <div class="center-column ">
+{#            <button type="button" name="myButton" formtarget="_self" class="myButton">По времени создания</button>#}
+{#            <button type="button" name="myButton" formtarget="_self" class="myButton">По приоритету</button>#}
 
+            {% for info in memores_and_tags %}
+                <div class="line">
+                    <div class="memory-column">
+                        <span class="left-text">{{ info.memory_text }}</span>
+                    </div>
+                    <div class="tag-column">
+                        {% for tag in info.tags_text %}
+                            <span class="left-text">{{ tag }}, </span>
+                        {% endfor %}
 
-        {% for info in memores_and_tags %}
-            <div class="line">
-                <div class="memory-column">
-                    <span class="left-text">{{ info.memory_text }}</span>
+                    </div>
+
                 </div>
-                <div class="tag-column">
-                    {% for tag in info.tags_text %}
-                        <span class="left-text">{{ tag }}, </span>
-                    {% endfor %}
 
-                </div>
-
-            </div>
-
-        {% endfor %}
+            {% endfor %}
 
 
-    </div>
+        </div>
 
 
-    <script type="text/javascript" src="{% static '/knowledge/js/show_all_memory.js' %}"></script>
-</main>
+        <script type="text/javascript" src="{% static '/knowledge/js/show_all_memory.js' %}"></script>
+    </main>
 {% endblock %}
 

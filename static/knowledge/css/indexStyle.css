@@ -24,6 +24,23 @@ min-width: 1400px; /*suggest a min-width &amp; min-height*/
     /*column-rule: 1px solid #fff;*/
 }
 
+/*.myButton{*/
+/*    margin:0;*/
+/*font-family: Roboto;*/
+/*font-style: normal;*/
+/*font-weight: normal;*/
+/*font-size: 18px;*/
+/*line-height: 21px;*/
+
+/*color: #FAF3F3;*/
+
+/*    color: rgb(255, 255, 255); font-size: 16px; line-height: 16px; padding: 6px; border-radius: 10px; font-family: Georgia, serif; font-weight: normal; text-decoration: none; font-style: normal; font-variant: normal; text-transform: none; background-image: linear-gradient(to right, rgb(28, 110, 164) 0%, rgb(35, 136, 203) 50%, rgb(20, 78, 117) 100%); box-shadow: rgb(0, 0, 0) 5px 5px 15px 5px; border: 2px solid rgb(28, 110, 164); display: inline-block;}*/
+/*.myButton:hover {*/
+/*background: #1C6EA4; }*/
+/*.myButton:active {*/
+/*background: #144E75;*/
+/*}*/
+
 .left-text {
     /*border: 1px solid black;*/
     /*margin: 10px 0 0 0;*/
