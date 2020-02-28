@@ -1,5 +1,12 @@
 main {
+justify-content: center;
+/*background: #A5ABA4;*/
+align-items: center;
 
+    resize: none;
+overflow: auto;
+min-width: 1400px; /*suggest a min-width &amp; min-height*/
+/*min-height: 50px;*/
 
 }
 
@@ -11,10 +18,10 @@ main {
     /*overflow: auto;*/
     min-width: 1000px; /*suggest a min-width &amp; min-height*/
     /*min-height: 300px;*/
-  /*        column-count: 2;*/
-  /*column-width: 200px;*/
-  /*column-gap: 20px;*/
-  /*column-rule: 1px solid #fff;*/
+    /*        column-count: 2;*/
+    /*column-width: 200px;*/
+    /*column-gap: 20px;*/
+    /*column-rule: 1px solid #fff;*/
 }
 
 .left-text {
@@ -23,8 +30,22 @@ main {
     /*float: left;*/
 }
 
+.sidebar {
+    resize: none;
+    /*float: left;*/
+    min-width: 300px;
+    width: 300px;
+    border: #1C1A1A solid;
+    height: 500px;
+    overflow: auto;
+    display: flex;
+    margin-right: 20px;
+
+}
+
 
 .memory-column {
+    resize: none;
     float: left;
     border: 2px solid yellow;
     width: 450px;
@@ -35,8 +56,8 @@ main {
 .tag-column {
     float: left;
     width: 500px;
-border: 2px solid pink;
-
+    border: 2px solid pink;
+    min-width: 500px;
 }
 
 .line {
