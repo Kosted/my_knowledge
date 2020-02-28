@@ -4,27 +4,28 @@
 {% endblock %}
 
 {% block content %}
-{#    <div class="button under_header sort_by_date">#}
-{#        <div class="text_on_button">По времени создания</div>#}
-{#    </div>#}
-{#    <div class="button under_header sort_by_priority">#}
-{##}
-{#        <div class="text_on_button">По приоритету</div>#}
-{#    </div>#}
+    {#    <div class="button under_header sort_by_date">#}
+    {#        <div class="text_on_button">По времени создания</div>#}
+    {#    </div>#}
+    {#    <div class="button under_header sort_by_priority">#}
+    {##}
+    {#        <div class="text_on_button">По приоритету</div>#}
+    {#    </div>#}
     <div class="center-column ">
 
 
         {% for info in memores_and_tags %}
             <div class="line">
                 <div class="memory-column">
-                    <div class="left-text">{{ info.memory_text }}</div>
+                    <span class="left-text">{{ info.memory_text }}</span>
                 </div>
-                {% for tag in info.tags_text %}
+                <div class="tag-column">
+                    {% for tag in info.tags_text %}
+                        <span class="left-text">{{ tag }}, </span>
+                    {% endfor %}
 
-                    <div class="left-text">{{ tag }}</div>
+                </div>
 
-
-                {% endfor %}
             </div>
 
         {% endfor %}

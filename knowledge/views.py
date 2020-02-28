@@ -39,9 +39,9 @@ def show_memory(request, order_by):
         if len(all_memores) > 20:
             all_memores = all_memores[:20]
             context['offset'] = len(all_memores)
-            # context['offset'] = 20
-        # else:
-        #     context['offset'] = len(all_memores) #отсутствуют дополнительные элементы
+            context['offset'] = 20
+        else:
+            context['offset'] = len(all_memores) #отсутствуют дополнительные элементы
 
         for memory in all_memores:
             memores_and_tags.append(memory.field_to_list())

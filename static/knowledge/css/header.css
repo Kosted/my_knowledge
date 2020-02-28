@@ -1,11 +1,16 @@
 header {
 
-width:auto;
+/*width:auto;*/
 height: 90px;
 display: flex;
 justify-content: center;
 background: #A5ABA4;
 align-items: center;
+
+    resize: none;
+overflow: auto;
+min-width: 1400px; /*suggest a min-width &amp; min-height*/
+/*min-height: 50px;*/
 }
 
 
