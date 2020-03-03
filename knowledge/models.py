@@ -1,6 +1,6 @@
 import pdb
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -24,6 +24,26 @@ class Tag(models.Model):
 
     def get_count(self):
         return self.count
+
+
+class RegularUser(User):
+    last_update_tag_action = models.CharField(max_length=10, default="")
+    last_update_tag_id = models.IntegerField(default=0)
+
+    last_update_memory_action = models.CharField(max_length=10, default="")
+    last_update_memory_id = models.IntegerField(default=0)
+
+    # На вход принимается строка с действием и экзепляр тега
+    # del, upd, create,
+    def update_last_edited_tag(self, action, tag):
+        self.last_update_tag_action = action
+        self.last_update_tag_id = tag.id
+
+    # На вход принимается строка с действием и экзепляр памяти
+    # del, upd, create,
+    def update_last_edited_tag(self, action, memory):
+        self.last_update_memory_action = action
+        self.last_update_memory_id = memory.id
 
 
 class Memory(models.Model):

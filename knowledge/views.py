@@ -8,7 +8,7 @@ from django.core.serializers import json
 from django.db.models.functions import Lower
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from knowledge.models import Memory, Tag
+from knowledge.models import Memory, Tag, RegularUser
 
 import pdb;
 #from knowledge.models import Memory, Tag
@@ -33,12 +33,18 @@ def show_memory(request, order_by):
 
     all_memores = Memory.objects.filter(author=request.user).order_by(order_by)
     memores_and_tags = list()
+    all_memory_count_on_current_moment = len(all_memores)
 
+    context['all_memory_count_on_current_moment']=all_memory_count_on_current_moment
+
+    # Получение всей страницы в перый раз или после обновления
     if request.method == "GET":
 
-        if len(all_memores) > 20:
-            all_memores = all_memores[:20]
-            context['offset'] = len(all_memores)
+        context['all_memory_count_on_current_moment'] = all_memory_count_on_current_moment
+        all_memores = all_memores[:20]
+
+        if all_memory_count_on_current_moment > 20:
+            # context['offset'] = len(all_memores)
             context['offset'] = 20
         else:
             context['offset'] = len(all_memores) #отсутствуют дополнительные элементы
@@ -53,7 +59,8 @@ def show_memory(request, order_by):
         # offset = int(request.POST['offset'])
         body = simplejson.loads(request.body)
         offset = body['offset']
-        if len(all_memores) > offset:
+        all_memory_count_on_last_request = body['all_memory_count_on_current_moment']
+        if all_memory_count_on_last_request > offset:
             if len(all_memores) - offset > 10:
                 offset += 10
             else:
@@ -180,11 +187,11 @@ def createUser(request):
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
-        if User.objects.filter(username=username).exists():
+        if RegularUser.objects.filter(username=username).exists():
             return render(request, "knowledge/signup.html", context={'error': "user exists"})
-        if User.objects.filter(email=email).exists():
+        if RegularUser.objects.filter(email=email).exists():
             return render(request, "knowledge/signup.html", context={'error': "email exists"})
-        user = User.objects.create_user(username, email, password)
+        user = RegularUser.objects.create_user(username, email, password)
         user.save()
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect('knowledge:index')
