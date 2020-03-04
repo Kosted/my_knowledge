@@ -35,7 +35,7 @@ def show_memory(request, order_by):
     memores_and_tags = list()
     all_memory_count_on_current_moment = len(all_memores)
 
-    context['all_memory_count_on_current_moment']=all_memory_count_on_current_moment
+    context['all_memory_count_on_current_moment'] = all_memory_count_on_current_moment
 
     # Получение всей страницы в перый раз или после обновления
     if request.method == "GET":
@@ -59,6 +59,8 @@ def show_memory(request, order_by):
         # offset = int(request.POST['offset'])
         body = simplejson.loads(request.body)
         offset = body['offset']
+        client_all_memory_count = body['client_all_memory_count']
+        # TODO
         all_memory_count_on_last_request = body['all_memory_count_on_current_moment']
         if all_memory_count_on_last_request > offset:
             if len(all_memores) - offset > 10:
@@ -106,6 +108,7 @@ def create_memory(request):
 
         memory = Memory.objects.create(author=user, priority=priority, memory_text=text)
         memory.save()
+        user.update_last_edited_memory("create", memory)
 
         tags_for_insert_in_memory = []
 
@@ -117,6 +120,7 @@ def create_memory(request):
         for string_tag in tags_string_list:
             temp_tag = Tag.objects.create(author=user, tag_text=string_tag)
             temp_tag.save()
+            user.update_last_edited_tag("create", temp_tag)
             tags_for_insert_in_memory.append(temp_tag)
 
         for tag in tags_for_insert_in_memory:
