@@ -24,7 +24,12 @@ def index(request):
 
 
 def show_memory(request, order_by):
-    user = request.user
+
+    # В связи с появлением новой модели юзера, стало необходимо по дефотлтному юзеру искать
+    # нового и уже работать с ним.
+    # user = request.user
+    user = RegularUser.objects.get(username=request.user.username)
+
     if not user.is_authenticated:
         return redirect("knowledge:login")
     context = {}
@@ -35,12 +40,15 @@ def show_memory(request, order_by):
     memores_and_tags = list()
     all_memory_count_on_current_moment = len(all_memores)
 
-    context['all_memory_count_on_current_moment'] = all_memory_count_on_current_moment
+    # context['all_memory_count_on_current_moment'] = all_memory_count_on_current_moment
 
     # Получение всей страницы в перый раз или после обновления
     if request.method == "GET":
 
-        context['all_memory_count_on_current_moment'] = all_memory_count_on_current_moment
+        context["last_update_tag_id"] = user.last_update_tag_id
+        context["last_update_tag_action"] = user.last_update_tag_action
+        context["last_update_memory_id"] = user.last_update_memory_id
+        context["last_update_memory_action"] = user.last_update_memory_action
         all_memores = all_memores[:20]
 
         if all_memory_count_on_current_moment > 20:
@@ -59,32 +67,48 @@ def show_memory(request, order_by):
         # offset = int(request.POST['offset'])
         body = simplejson.loads(request.body)
         offset = body['offset']
-        client_all_memory_count = body['client_all_memory_count']
-        # TODO
-        all_memory_count_on_last_request = body['all_memory_count_on_current_moment']
-        if all_memory_count_on_last_request > offset:
-            if len(all_memores) - offset > 10:
-                offset += 10
+
+        if(user.last_update_tag_id != body['last_update_tag_id'] or
+        user.last_update_tag_action != body['last_update_tag_action'] or
+        user.last_update_memory_id != body['last_update_memory_id'] or
+        user.last_update_memory_action != body['last_update_memory_action']):
+            # context["warning"] = True
+            warning = True
+        else:
+            # context["warning"] = False
+            warning = False
+
+# TODO
+
+#         all_memory_count_on_last_request = body['all_memory_count_on_current_moment']
+
+        if all_memory_count_on_current_moment > offset:
+            if all_memory_count_on_current_moment - offset > 10:
+                delta_offset = 10
             else:
-                offset = 0 #len(all_memores) - offset
-        all_memores = all_memores[offset:offset + 10]
+                delta_offset = all_memory_count_on_current_moment - offset
+
+        all_memores = all_memores[offset:offset + delta_offset]
+
 
         for memory in all_memores:
             memores_and_tags.append(memory.field_to_list())
         # context ={"memores_and_tags": memores_and_tags}
 
+        context["warning"] = warning
         context["memores_and_tags"] = memores_and_tags
-        context["offset"] = offset
-        pdb.set_trace()
+        context["offset"] = offset + delta_offset
+        # pdb.set_trace()
 
         # return HttpResponse(json.dumps(context),
-        return JsonResponse({"memores_and_tags": memores_and_tags, "offset": offset}, status=200)
+        return JsonResponse(context, status=200)
 
 
 def create_memory(request):
 
     # pdb.set_trace()
     user = request.user
+    user = RegularUser.objects.get(username=user.username)
     if not user.is_authenticated:
         return redirect("knowledge:login")
     if request.method == "POST":
