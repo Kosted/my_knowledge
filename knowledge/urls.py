@@ -16,6 +16,7 @@ urlpatterns = [
     path("search/", views.search, name="search"),
     path("convert_text_to_tags/", views.convert_text_to_tags, name="convert_text_to_tags"),
     path("get_single_tag_counter/<str:tag_text>", views.get_single_tag_counter, name="get_single_tag_counter"),
+    path("search_by_tags/", views.search_by_tags, name="search_by_tags"),
 
 
     path("temp/", views.temp, name="temp")

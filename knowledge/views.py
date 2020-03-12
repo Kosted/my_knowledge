@@ -11,7 +11,9 @@ from django.shortcuts import render, redirect
 from knowledge.models import Memory, Tag, RegularUser
 
 import pdb;
-#from knowledge.models import Memory, Tag
+
+
+# from knowledge.models import Memory, Tag
 
 
 def index(request):
@@ -24,7 +26,6 @@ def index(request):
 
 
 def show_memory(request, order_by):
-
     # В связи с появлением новой модели юзера, стало необходимо по дефотлтному юзеру искать
     # нового и уже работать с ним.
     # user = request.user
@@ -36,9 +37,9 @@ def show_memory(request, order_by):
 
     order_by = "pub_date" if order_by == "date" else "priority"
 
-    all_memores = Memory.objects.filter(author=request.user).order_by(order_by)
+    all_memories = Memory.objects.filter(author=request.user).order_by(order_by)
     memores_and_tags = list()
-    all_memory_count_on_current_moment = len(all_memores)
+    all_memory_count_on_current_moment = len(all_memories)
 
     # context['all_memory_count_on_current_moment'] = all_memory_count_on_current_moment
 
@@ -49,15 +50,14 @@ def show_memory(request, order_by):
         context["last_update_tag_action"] = user.last_update_tag_action
         context["last_update_memory_id"] = user.last_update_memory_id
         context["last_update_memory_action"] = user.last_update_memory_action
-        all_memores = all_memores[:20]
+        all_memories = all_memories[:20]
 
         if all_memory_count_on_current_moment > 20:
-            # context['offset'] = len(all_memores)
             context['offset'] = 20
         else:
-            context['offset'] = len(all_memores) #отсутствуют дополнительные элементы
+            context['offset'] = len(all_memories)  # отсутствуют дополнительные элементы
 
-        for memory in all_memores:
+        for memory in all_memories:
             memores_and_tags.append(memory.field_to_list())
         context["memores_and_tags"] = memores_and_tags
 
@@ -68,19 +68,15 @@ def show_memory(request, order_by):
         body = simplejson.loads(request.body)
         offset = body['offset']
 
-        if(user.last_update_tag_id != body['last_update_tag_id'] or
-        user.last_update_tag_action != body['last_update_tag_action'] or
-        user.last_update_memory_id != body['last_update_memory_id'] or
-        user.last_update_memory_action != body['last_update_memory_action']):
+        if (user.last_update_tag_id != body['last_update_tag_id'] or
+                user.last_update_tag_action != body['last_update_tag_action'] or
+                user.last_update_memory_id != body['last_update_memory_id'] or
+                user.last_update_memory_action != body['last_update_memory_action']):
             # context["warning"] = True
             warning = True
         else:
             # context["warning"] = False
             warning = False
-
-# TODO
-
-#         all_memory_count_on_last_request = body['all_memory_count_on_current_moment']
 
         if all_memory_count_on_current_moment > offset:
             if all_memory_count_on_current_moment - offset > 10:
@@ -88,10 +84,9 @@ def show_memory(request, order_by):
             else:
                 delta_offset = all_memory_count_on_current_moment - offset
 
-        all_memores = all_memores[offset:offset + delta_offset]
+        all_memories = all_memories[offset:offset + delta_offset]
 
-
-        for memory in all_memores:
+        for memory in all_memories:
             memores_and_tags.append(memory.field_to_list())
         # context ={"memores_and_tags": memores_and_tags}
 
@@ -105,7 +100,6 @@ def show_memory(request, order_by):
 
 
 def create_memory(request):
-
     # pdb.set_trace()
     user = request.user
     user = RegularUser.objects.get(username=user.username)
@@ -154,7 +148,7 @@ def create_memory(request):
         if len(text) < 60:
             context = {"message": text}
         else:
-            context = {"message": text[0:60]+"..."}
+            context = {"message": text[0:60] + "..."}
         # return  HttpResponse(context, status=200)
         return render(request, 'knowledge/create_memory.html', context)
 
@@ -179,7 +173,6 @@ def logout_view(request):
 
 
 def login_view(request):
-
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -207,7 +200,7 @@ def logger(request):
         else:
             return render(request, "knowledge/login.html", {"error": "неверный логин или пароль"})
     else:
-        return redirect("knowledge:logout",)
+        return redirect("knowledge:logout", )
 
 
 def createUser(request):
@@ -235,7 +228,7 @@ def convert_text_to_tags(request):
         request_json_data = simplejson.loads(request.body)
         # pdb.set_trace()
         all_words = re.findall('\w+\S*\w+', request_json_data['text'])
-        existing_words = request_json_data['existing_tags']#.split(" ")
+        existing_words = request_json_data['existing_tags']  # .split(" ")
 
         for word in existing_words:
             if word in all_words:
@@ -264,6 +257,10 @@ def get_single_tag_counter(request, tag_text):
         if len(single_tag) == 0:
             return HttpResponse("0", status=200)
         return HttpResponse(single_tag[0].get_count(), status=200)
+
+
+def search_by_tags():
+    pass
 
 
 def temp(request):
