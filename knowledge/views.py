@@ -28,8 +28,8 @@ def index(request):
 def show_memory(request, order_by):
     # В связи с появлением новой модели юзера, стало необходимо по дефотлтному юзеру искать
     # нового и уже работать с ним.
-    # user = request.user
-    user = RegularUser.objects.get(username=request.user.username)
+    user = request.user.regularuser
+    # user = RegularUser.objects.get(username=request.user.username)
 
     if not user.is_authenticated:
         return redirect("knowledge:login")
@@ -259,8 +259,32 @@ def get_single_tag_counter(request, tag_text):
         return HttpResponse(single_tag[0].get_count(), status=200)
 
 
-def search_by_tags():
-    pass
+def search_by_tags(request):
+
+    user = request.user.regularuser
+    if not user.is_authenticated:
+        return redirect("knowledge:login")
+    if request.method == "POST":
+        body = simplejson.loads(request.body)
+        require_tags = body["tags"]
+
+        memories = list(Memory.objects.filter(author=user).all())
+
+        for require_tag in require_tags:
+
+            for memory in memories[::-1]:
+                memory_tags_on_arr = []
+                for tag in memory.tags.all():
+                    memory_tags_on_arr.append(tag.tag_text)
+                if require_tag not in memory_tags_on_arr:
+                    memories.remove(memory)
+
+        result = list()
+        for memory in memories:
+            result.append({"memory_text": memory.memory_text, "tags":  list(map(lambda x: x.tag_text, memory.tags.all()))})
+        context = {"memories": result}
+
+        return JsonResponse(context, status=200)
 
 
 def temp(request):
