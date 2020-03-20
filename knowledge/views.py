@@ -287,6 +287,20 @@ def search_by_tags(request):
         return JsonResponse(context, status=200)
 
 
+def search_similar_tags(request):
+    if request.method == "GET":
+        user = request.user.regularuser
+        if not user.is_authenticated:
+            return redirect("knowledge:login")
+        search_source = request.GET.get("search_source")
+        tags = Tag.objects.filter(author=user).order_by("count").filter(tag_text__startswith=search_source).values("tag_text", "count")
+
+        context = {"tags": list(tags)}
+        return JsonResponse(context, status=200)
+
+
+
+
 def temp(request):
     pass
     # print(request.POST)
