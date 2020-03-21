@@ -281,8 +281,28 @@ def search_by_tags(request):
 
         result = list()
         for memory in memories:
-            result.append({"memory_text": memory.memory_text, "tags":  list(map(lambda x: x.tag_text, memory.tags.all()))})
-        context = {"memories": result}
+            # result.append({"memory_text": memory.memory_text, "tags":  list(memory.tags.values("tag_text"))})
+
+            # вычленение всех тегов из каждой памяти
+            all_tags_text_this_memory = list(map(lambda x: x.tag_text, memory.tags.all()))
+
+            # нахождение множества уникальных тегов в котором имеются искомые
+            another_tags_for_future_search = {}
+            for tag in all_tags_text_this_memory:
+                another_tags_for_future_search[tag]=""
+            another_tags_for_future_search = list(another_tags_for_future_search.keys())
+
+            # удаление искомых тегов из множества уникльных для их рекомендования
+            for require_tag in require_tags:
+                if require_tag in another_tags_for_future_search:
+                    another_tags_for_future_search.remove(require_tag)
+
+
+
+            result.append({"memory_text": memory.memory_text, "tags":  all_tags_text_this_memory})
+
+
+        context = {"memories": result, "another_tags_for_future_search": another_tags_for_future_search}
 
         return JsonResponse(context, status=200)
 
@@ -292,6 +312,7 @@ def search_similar_tags(request):
         user = request.user.regularuser
         if not user.is_authenticated:
             return redirect("knowledge:login")
+        
         search_source = request.GET.get("search_source")
         tags = Tag.objects.filter(author=user).order_by("count").filter(tag_text__startswith=search_source).values("tag_text", "count")
 
