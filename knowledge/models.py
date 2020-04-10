@@ -1,6 +1,6 @@
 import pdb
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -9,8 +9,30 @@ from django.db import models
 from django.utils import timezone
 
 
+class RegularUser(User):
+    last_update_tag_action = models.CharField(max_length=10, default="")
+    last_update_tag_id = models.IntegerField(default=0)
+
+    last_update_memory_action = models.CharField(max_length=10, default="")
+    last_update_memory_id = models.IntegerField(default=0)
+
+    # На вход принимается строка с действием и экзепляр тега
+    # del, upd, create,
+    def update_last_edited_tag(self, action, tag):
+        self.last_update_tag_action = action
+        self.last_update_tag_id = tag.id
+        self.save()
+
+    # На вход принимается строка с действием и экзепляр памяти
+    # del, upd, create,
+    def update_last_edited_memory(self, action, memory):
+        self.last_update_memory_action = action
+        self.last_update_memory_id = memory.id
+        self.save()
+
+
 class Tag(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=None)
+    author = models.ForeignKey(RegularUser, on_delete=models.CASCADE, null=True, blank=True, default=None)
     tag_text = models.CharField(max_length=20)
     count = models.IntegerField(default=0)
 
@@ -27,7 +49,7 @@ class Tag(models.Model):
 
 
 class Memory(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=None)
+    author = models.ForeignKey(RegularUser, on_delete=models.CASCADE, null=True, blank=True, default=None)
     memory_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published', default=timezone.now)
     tags = models.ManyToManyField(Tag)

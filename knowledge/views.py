@@ -5,12 +5,15 @@ import simplejson as simplejson
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.core.serializers import json
+from django.db.models.functions import Lower
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from knowledge.models import Memory, Tag
+from knowledge.models import Memory, Tag, RegularUser
 
 import pdb;
-#from knowledge.models import Memory, Tag
+
+
+# from knowledge.models import Memory, Tag
 
 
 def index(request):
@@ -23,26 +26,38 @@ def index(request):
 
 
 def show_memory(request, order_by):
-    user = request.user
+    # В связи с появлением новой модели юзера, стало необходимо по дефотлтному юзеру искать
+    # нового и уже работать с ним.
+    user = request.user.regularuser
+    # user = RegularUser.objects.get(username=request.user.username)
+
     if not user.is_authenticated:
         return redirect("knowledge:login")
     context = {}
 
     order_by = "pub_date" if order_by == "date" else "priority"
 
-    all_memores = Memory.objects.filter(author=request.user).order_by(order_by)
+    all_memories = Memory.objects.filter(author=request.user).order_by(order_by)
     memores_and_tags = list()
+    all_memory_count_on_current_moment = len(all_memories)
 
+    # context['all_memory_count_on_current_moment'] = all_memory_count_on_current_moment
+
+    # Получение всей страницы в перый раз или после обновления
     if request.method == "GET":
 
-        if len(all_memores) > 20:
-            all_memores = all_memores[:20]
-            context['offset'] = len(all_memores)
-            # context['offset'] = 20
-        else:
-            context['offset'] = len(all_memores) #отсутствуют дополнительные элементы
+        context["last_update_tag_id"] = user.last_update_tag_id
+        context["last_update_tag_action"] = user.last_update_tag_action
+        context["last_update_memory_id"] = user.last_update_memory_id
+        context["last_update_memory_action"] = user.last_update_memory_action
+        all_memories = all_memories[:20]
 
-        for memory in all_memores:
+        if all_memory_count_on_current_moment > 20:
+            context['offset'] = 20
+        else:
+            context['offset'] = len(all_memories)  # отсутствуют дополнительные элементы
+
+        for memory in all_memories:
             memores_and_tags.append(memory.field_to_list())
         context["memores_and_tags"] = memores_and_tags
 
@@ -52,29 +67,42 @@ def show_memory(request, order_by):
         # offset = int(request.POST['offset'])
         body = simplejson.loads(request.body)
         offset = body['offset']
-        if len(all_memores) > offset:
-            if len(all_memores) - offset > 10:
-                offset += 10
-            else:
-                offset = 0 #len(all_memores) - offset
-        all_memores = all_memores[offset:offset + 10]
 
-        for memory in all_memores:
+        if (user.last_update_tag_id != body['last_update_tag_id'] or
+                user.last_update_tag_action != body['last_update_tag_action'] or
+                user.last_update_memory_id != body['last_update_memory_id'] or
+                user.last_update_memory_action != body['last_update_memory_action']):
+            # context["warning"] = True
+            warning = True
+        else:
+            # context["warning"] = False
+            warning = False
+
+        if all_memory_count_on_current_moment > offset:
+            if all_memory_count_on_current_moment - offset > 10:
+                delta_offset = 10
+            else:
+                delta_offset = all_memory_count_on_current_moment - offset
+
+        all_memories = all_memories[offset:offset + delta_offset]
+
+        for memory in all_memories:
             memores_and_tags.append(memory.field_to_list())
         # context ={"memores_and_tags": memores_and_tags}
 
+        context["warning"] = warning
         context["memores_and_tags"] = memores_and_tags
-        context["offset"] = offset
-        pdb.set_trace()
+        context["offset"] = offset + delta_offset
+        # pdb.set_trace()
 
         # return HttpResponse(json.dumps(context),
-        return JsonResponse({"memores_and_tags": memores_and_tags, "offset": offset}, status=200)
+        return JsonResponse(context, status=200)
 
 
 def create_memory(request):
-
     # pdb.set_trace()
     user = request.user
+    user = RegularUser.objects.get(username=user.username)
     if not user.is_authenticated:
         return redirect("knowledge:login")
     if request.method == "POST":
@@ -98,6 +126,7 @@ def create_memory(request):
 
         memory = Memory.objects.create(author=user, priority=priority, memory_text=text)
         memory.save()
+        user.update_last_edited_memory("create", memory)
 
         tags_for_insert_in_memory = []
 
@@ -109,6 +138,7 @@ def create_memory(request):
         for string_tag in tags_string_list:
             temp_tag = Tag.objects.create(author=user, tag_text=string_tag)
             temp_tag.save()
+            user.update_last_edited_tag("create", temp_tag)
             tags_for_insert_in_memory.append(temp_tag)
 
         for tag in tags_for_insert_in_memory:
@@ -118,7 +148,7 @@ def create_memory(request):
         if len(text) < 60:
             context = {"message": text}
         else:
-            context = {"message": text[0:60]+"..."}
+            context = {"message": text[0:60] + "..."}
         # return  HttpResponse(context, status=200)
         return render(request, 'knowledge/create_memory.html', context)
 
@@ -143,7 +173,6 @@ def logout_view(request):
 
 
 def login_view(request):
-
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -171,7 +200,7 @@ def logger(request):
         else:
             return render(request, "knowledge/login.html", {"error": "неверный логин или пароль"})
     else:
-        return redirect("knowledge:logout",)
+        return redirect("knowledge:logout", )
 
 
 def createUser(request):
@@ -179,11 +208,11 @@ def createUser(request):
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
-        if User.objects.filter(username=username).exists():
+        if RegularUser.objects.filter(username=username).exists():
             return render(request, "knowledge/signup.html", context={'error': "user exists"})
-        if User.objects.filter(email=email).exists():
+        if RegularUser.objects.filter(email=email).exists():
             return render(request, "knowledge/signup.html", context={'error': "email exists"})
-        user = User.objects.create_user(username, email, password)
+        user = RegularUser.objects.create_user(username, email, password)
         user.save()
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect('knowledge:index')
@@ -199,7 +228,7 @@ def convert_text_to_tags(request):
         request_json_data = simplejson.loads(request.body)
         # pdb.set_trace()
         all_words = re.findall('\w+\S*\w+', request_json_data['text'])
-        existing_words = request_json_data['existing_tags']#.split(" ")
+        existing_words = request_json_data['existing_tags']  # .split(" ")
 
         for word in existing_words:
             if word in all_words:
@@ -223,11 +252,74 @@ def convert_text_to_tags(request):
 def get_single_tag_counter(request, tag_text):
     if request.method == "GET":
         user = request.user
-        single_tag = Tag.objects.filter(author=user).filter(tag_text=tag_text)
+        single_tag = Tag.objects.filter(author=user).annotate(tag_lower=Lower('tag_text')).filter(tag_lower=tag_text)
         # pdb.set_trace()
         if len(single_tag) == 0:
             return HttpResponse("0", status=200)
         return HttpResponse(single_tag[0].get_count(), status=200)
+
+
+def search_by_tags(request):
+
+    user = request.user.regularuser
+    if not user.is_authenticated:
+        return redirect("knowledge:login")
+    if request.method == "POST":
+        body = simplejson.loads(request.body)
+        require_tags = body["tags"]
+
+        memories = list(Memory.objects.filter(author=user).all())
+
+        for require_tag in require_tags:
+
+            for memory in memories[::-1]:
+                memory_tags_on_arr = []
+                for tag in memory.tags.all():
+                    memory_tags_on_arr.append(tag.tag_text)
+                if require_tag not in memory_tags_on_arr:
+                    memories.remove(memory)
+
+        result = list()
+        for memory in memories:
+            # result.append({"memory_text": memory.memory_text, "tags":  list(memory.tags.values("tag_text"))})
+
+            # вычленение всех тегов из каждой памяти
+            all_tags_text_this_memory = list(map(lambda x: x.tag_text, memory.tags.all()))
+
+            # нахождение множества уникальных тегов в котором имеются искомые
+            another_tags_for_future_search = {}
+            for tag in all_tags_text_this_memory:
+                another_tags_for_future_search[tag]=""
+            another_tags_for_future_search = list(another_tags_for_future_search.keys())
+
+            # удаление искомых тегов из множества уникльных для их рекомендования
+            for require_tag in require_tags:
+                if require_tag in another_tags_for_future_search:
+                    another_tags_for_future_search.remove(require_tag)
+
+
+
+            result.append({"memory_text": memory.memory_text, "tags":  all_tags_text_this_memory})
+
+
+        context = {"memories": result, "another_tags_for_future_search": another_tags_for_future_search}
+
+        return JsonResponse(context, status=200)
+
+
+def search_similar_tags(request):
+    if request.method == "GET":
+        user = request.user.regularuser
+        if not user.is_authenticated:
+            return redirect("knowledge:login")
+        
+        search_source = request.GET.get("search_source")
+        tags = Tag.objects.filter(author=user).order_by("count").filter(tag_text__startswith=search_source).values("tag_text", "count")
+
+        context = {"tags": list(tags)}
+        return JsonResponse(context, status=200)
+
+
 
 
 def temp(request):
