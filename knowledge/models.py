@@ -1,40 +1,43 @@
-import pdb
-
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-
 
 # Create your models here.
 from django.utils import timezone
 
+from project import settings
+
 
 class RegularUser(User):
-    last_update_tag_action = models.CharField(max_length=10, default="")
-    last_update_tag_id = models.IntegerField(default=0)
 
-    last_update_memory_action = models.CharField(max_length=10, default="")
-    last_update_memory_id = models.IntegerField(default=0)
+    # class Meta:
+        # app_label = 'knowledge'
+    pass
+    # last_update_tag_action = models.CharField(max_length=10, default="")
+    # last_update_tag_id = models.IntegerField(default=0)
+    #
+    # last_update_memory_action = models.CharField(max_length=10, default="")
+    # last_update_memory_id = models.IntegerField(default=0)
 
     # На вход принимается строка с действием и экзепляр тега
     # del, upd, create,
-    def update_last_edited_tag(self, action, tag):
-        self.last_update_tag_action = action
-        self.last_update_tag_id = tag.id
-        self.save()
+    # def update_last_edited_tag(self, action, tag):
+    #     self.last_update_tag_action = action
+    #     self.last_update_tag_id = tag.id
+    #     self.save()
 
     # На вход принимается строка с действием и экзепляр памяти
     # del, upd, create,
-    def update_last_edited_memory(self, action, memory):
-        self.last_update_memory_action = action
-        self.last_update_memory_id = memory.id
-        self.save()
+    # def update_last_edited_memory(self, action, memory):
+    #     self.last_update_memory_action = action
+    #     self.last_update_memory_id = memory.id
+    #     self.save()
 
 
 class Tag(models.Model):
-    author = models.ForeignKey(RegularUser, on_delete=models.CASCADE, null=True, blank=True, default=None)
-    tag_text = models.CharField(max_length=20)
-    count = models.IntegerField(default=0)
+    user = models.ForeignKey(RegularUser, on_delete=models.CASCADE, null=True, blank=True, default=None)
+    tag_text = models.CharField(max_length=30)
+    count = models.IntegerField(default=1)
 
     # memory = models.ManyToManyField(Memory)
 
@@ -49,7 +52,7 @@ class Tag(models.Model):
 
 
 class Memory(models.Model):
-    author = models.ForeignKey(RegularUser, on_delete=models.CASCADE, null=True, blank=True, default=None)
+    user = models.ForeignKey(RegularUser, on_delete=models.CASCADE, default=None, )
     memory_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published', default=timezone.now)
     tags = models.ManyToManyField(Tag)
@@ -64,8 +67,8 @@ class Memory(models.Model):
         return self.memory_text
 
     def field_to_list(self):
-        # pdb.set_trace()
         tags_text = []
         for tag in self.tags.all():
             tags_text.append(tag.tag_text)
-        return {"memory_text" :self.memory_text, "tags_text":tags_text, "pub_date":self.pub_date, "priority":self.priority}
+        return {"memory_text": self.memory_text, "tags_text": tags_text, "pub_date": self.pub_date,
+                "priority": self.priority}

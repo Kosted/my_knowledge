@@ -1,0 +1,10 @@
+/venv/
+/.idea/
+/__pycache__/
+/knowledge/__pycache__/
+/knowledge/migrations/__pycache__/
+/project/Pipfile
+/project/Pipfile.lock
+/project/__pycache__/
+
+
